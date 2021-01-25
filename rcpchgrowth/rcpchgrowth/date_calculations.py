@@ -32,8 +32,8 @@ def chronological_decimal_age(birth_date: date, observation_date: date) -> float
     :param observation_date: date observation made
     """
 
-    days_between = observation_date - birth_date
-    chronological_decimal_age = days_between.days / 365.25
+    dates_interval = observation_date - birth_date
+    chronological_decimal_age = dates_interval.days / 365.25
     return chronological_decimal_age
     
 
@@ -54,7 +54,7 @@ def corrected_decimal_age(birth_date: date, observation_date: date, gestation_we
     correction_days = 0
     pregnancy_length_days = TERM_PREGNANCY_LENGTH_DAYS
 
-    if gestation_weeks > 0:
+    if gestation_weeks > 0 and gestation_weeks < 37:
         pregnancy_length_days = (gestation_weeks * 7) + gestation_days
 
     try:
@@ -69,20 +69,15 @@ def corrected_decimal_age(birth_date: date, observation_date: date, gestation_we
     edd = birth_date + timedelta(days=correction_days)
     corrected_age =  chronological_decimal_age(edd, observation_date)
 
-    if pregnancy_length_days >= TERM_LOWER_THRESHOLD_LENGTH_DAYS:
-        #term baby
-        return uncorrected_age
-
-    elif pregnancy_length_days < EXTREME_PREMATURITY_THRESHOLD_LENGTH_DAYS and corrected_age <= 2:
+    if pregnancy_length_days < EXTREME_PREMATURITY_THRESHOLD_LENGTH_DAYS and corrected_age <= 2:
         #correct age for 2 years
         return corrected_age
-
-    elif (pregnancy_length_days >= EXTREME_PREMATURITY_THRESHOLD_LENGTH_DAYS) and (pregnancy_length_days < TERM_LOWER_THRESHOLD_LENGTH_DAYS) and uncorrected_age <=1:
+    elif (pregnancy_length_days >= EXTREME_PREMATURITY_THRESHOLD_LENGTH_DAYS) and (pregnancy_length_days < TERM_LOWER_THRESHOLD_LENGTH_DAYS) and corrected_age <=1:
         #correct age for 1 year
         return corrected_age
-    
     else:
         return uncorrected_age
+    
 
 
 def chronological_calendar_age(birth_date: date, observation_date: date) -> str:
