@@ -23,10 +23,6 @@ UK90_PRETERM_DATA = pkg_resources.resource_filename(__name__, "/data_tables/uk90
 with open(UK90_PRETERM_DATA) as json_file:
             UK90_PRETERM_DATA = json.load(json_file)
             json_file.close()
-UK90_TERM_DATA = pkg_resources.resource_filename(__name__, "/data_tables/uk90_term.json") ## 37-42 weeks gestation
-with open(UK90_TERM_DATA) as json_file:
-            UK90_TERM_DATA = json.load(json_file)
-            json_file.close()
 WHO_INFANTS_DATA = pkg_resources.resource_filename(__name__, "/data_tables/who_infants.json") ## 2 weeks to 2 years
 with open(WHO_INFANTS_DATA) as json_file:
             WHO_INFANTS_DATA = json.load(json_file)
@@ -112,18 +108,9 @@ def uk_who_reference(
     if age < UK90_REFERENCE_LOWER_THRESHOLD:
         # Below the range for which we have reference data, we can't provide a calculation.
         return ValueError("There is no reference data below 23 weeks gestation")
-    elif age < UK90_TERM_REFERENCE_LOWER_THRESHOLD:
-        # Below 37 weeks, the UK90 preterm data is always used
-        return UK90_PRETERM_DATA
-
     elif age < UK90_TERM_REFERENCE_UPPER_THRESHOLD:
-        # Below 42 weeks
-        if born_preterm:
-            # Preterm children should continue to be plotted using the preterm references
-            return UK90_PRETERM_DATA
-        else:
-            return UK90_TERM_DATA
-    
+        # Below 42 weeks, the UK90 preterm data is always used - the UK90_TERM_DATA has been deprecated
+        return UK90_PRETERM_DATA
     elif age < WHO_CHILD_LOWER_THRESHOLD:
         # Children beyond 2 weeks but below 2 years are measured lying down using WHO data
         return WHO_INFANTS_DATA
