@@ -11,7 +11,7 @@ import controllers
 import blueprints
 import schemas
 import apispec_generation
-from rcpchgrowth.rcpchgrowth import create_uk_who_chart, create_trisomy_21_chart, create_turner_chart
+from rcpchgrowth.rcpchgrowth import create_chart
 from rcpchgrowth.rcpchgrowth.constants.parameter_constants import *
 
 

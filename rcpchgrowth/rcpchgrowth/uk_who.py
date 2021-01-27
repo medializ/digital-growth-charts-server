@@ -1,7 +1,6 @@
 import json
 import pkg_resources
 from .constants import *
-# from .global_functions import z_score, cubic_interpolation, linear_interpolation, centile, measurement_for_z, nearest_lowest_index, fetch_lms
 # import timeit #see below, comment back in if timing functions in this module
 
 """
